@@ -1,7 +1,7 @@
 // @ts-ignore
 import fs from "fs";
 
-const FILE = fs.readFileSync("input.txt", "utf-8");
+const FILE = fs.readFileSync("test-input.txt", "utf-8");
 const WRITABLE_FILE = FILE.split("");
 const LINE_LENGTH = FILE.indexOf("\n");
 const PATHS: { dir: string; x: number; y: number }[] = [
@@ -34,35 +34,24 @@ const walk = (index: number, path: { dir: string; x: number; y: number }) => {
     }
 
     if (WRITABLE_FILE[nextIndex] === "#") {
-      // turn
-      // console.debug("TURNING");
-      // console.debug("path.dir: ", path.dir);
       const newDir = CLOCKWISE[path.dir];
       const newPath = PATHS.find((p) => p.dir === newDir);
       if (!newPath) throw new Error("Path not found");
       path = newPath;
-      // console.debug("path.dir: ", path.dir);
     }
 
     if (WRITABLE_FILE[index] === ".") {
-      // count and move
       COUNT++;
       WRITABLE_FILE[index] = "X";
     }
 
-    // console.debug("index before: ", index);
     index = MOVE(index, path);
-    // console.debug("index after: ", index);
-    // printFile(index);
-    // console.debug(WRITABLE_FILE);
-    // console.debug("COUNT: ", COUNT);
   }
 };
 
 const main = () => {
   for (let i = 0; i < WRITABLE_FILE.length; i++) {
     if (WRITABLE_FILE[i] === "^") {
-      console.debug("beggining i: ", i);
       WRITABLE_FILE[i] = "X";
       COUNT++;
       walk(i, PATHS[3]);
